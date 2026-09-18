@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { usePathname } from 'next/navigation'
 import { Menu, Moon, Sun, Search } from 'lucide-react'
 import { useTheme } from 'next-themes'
@@ -37,9 +37,7 @@ export function Navbar() {
 
   useEffect(() => setMounted(true), [])
 
-  // Logged-out visitors and admins see the full public site links; students see
-  // their learning links. The admin is the owner — they always browse as
-  // "Hamed Hussein".
+  // Logged-out visitors see the public site links; students see their learning links.
   const navLinks = isAuthenticated && !isAdmin ? studentLinks : publicLinks
 
   return (
@@ -51,7 +49,7 @@ export function Navbar() {
           <div className="container-wide flex h-16 items-center justify-between">
             <Link href="/" className="flex items-center gap-2 font-bold text-xl text-text-primary">
               <Logo className="h-8 w-8 shrink-0" />
-              <span>Hamed<span className="gradient-text"> Hussein</span></span>
+              <span>CodingWith<span className="gradient-text">Bashir</span></span>
             </Link>
 
             <nav className="hidden md:flex items-center gap-1">

@@ -95,7 +95,7 @@ export default function ContactPage() {
   return (
     <main id="main-content" className="section-padding pt-24">
       <div className="container-wide">
-        <MetadataInjector title="Contact" description="Get in touch with Hamed Hussein for web development, AI/ML, consulting, or collaboration opportunities." url="/contact" />
+        <MetadataInjector title="Contact" description="Get in touch with CodingWithBashir for web development, AI/ML, consulting, or collaboration opportunities." url="/contact" />
         <Breadcrumbs items={[{ label: 'Contact' }]} />
         <div className="text-center max-w-2xl mx-auto mb-12">
           <Badge className="mb-4 bg-brand-primary/10 text-brand-primary border-brand-primary/20">📬 Get in Touch</Badge>

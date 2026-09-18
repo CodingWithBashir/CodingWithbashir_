@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
-const SITE_NAME = 'Hamed Hussein'
-const FALLBACK_URL = 'https://hamedhussein.is-a.dev'
+const SITE_NAME = 'CodingWithBashir'
+const FALLBACK_URL = 'https://codingwithbashir.com'
 const rawAppUrl = process.env.NEXT_PUBLIC_APP_URL || FALLBACK_URL
 
 // Prefer the configured URL, but never use a localhost URL as the public base
@@ -57,7 +57,7 @@ export function generateSEOMetadata({
       title: metaTitle,
       description,
       images: [ogImage],
-      creator: '@hamedProDev',
+      creator: '@codingwithbashir',
     },
     alternates: {
       canonical: fullUrl,

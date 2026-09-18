@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { useSearchParams } from 'next/navigation'
 import { Search as SearchIcon, Loader2, FolderGit2, GraduationCap, BookOpen, ArrowRight } from 'lucide-react'
 import { Input } from '@/components/ui/input'
@@ -44,7 +44,7 @@ export default function SearchPage() {
   return (
     <main id="main-content" className="section-padding pt-24">
       <div className="container-wide max-w-3xl">
-        <MetadataInjector title="Search" description="Search projects, courses, and lessons by Hamed Hussein." />
+        <MetadataInjector title="Search" description="Search projects, courses, and lessons by CodingWithBashir." />
 
         <h1 className="text-3xl font-bold mb-2">Search</h1>
         <p className="text-text-muted mb-6">Find projects, courses, and lessons.</p>

@@ -23,6 +23,7 @@ interface CertificateDocumentProps {
   issueDate: string
   score?: number | null
   verified?: boolean
+  recipientPhoto?: string
 }
 
 export function CertificateDocument({
@@ -32,6 +33,7 @@ export function CertificateDocument({
   issueDate,
   score,
   verified = true,
+  recipientPhoto,
 }: CertificateDocumentProps) {
   const [copied, setCopied] = useState(false)
   const [downloading, setDownloading] = useState(false)
@@ -186,9 +188,9 @@ export function CertificateDocument({
                   </div>
 
                   <div className="text-center">
-                    <p className="font-serif text-xl italic text-slate-700 mb-1">Hamed Hussein</p>
+                    <p className="font-serif text-xl italic text-slate-700 mb-1">Bashir</p>
                     <div className="w-32 h-px bg-slate-300 mx-auto mb-1" />
-                    <p className="text-[10px] uppercase tracking-wider text-slate-400">Fullstack & AI/ML Engineer</p>
+                    <p className="text-[10px] uppercase tracking-wider text-slate-400">CodingWithBashir · Lead Instructor</p>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { Gift, Loader2, Check, Copy, Users, Twitter, MessageCircle, Send, Award } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -30,7 +30,7 @@ export default function InvitePage() {
     } catch {}
   }
 
-  const shareText = encodeURIComponent('Learn to code for free and earn certificates with Hamed Hussein! 🚀')
+  const shareText = encodeURIComponent('Learn to code for free and earn certificates with CodingWithBashir! 🚀')
 
   if (isLoading) {
     return <div className="flex items-center justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-brand-primary" /></div>

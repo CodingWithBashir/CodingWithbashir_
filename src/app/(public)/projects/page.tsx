@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Search, ExternalLink, Github, ArrowRight, Loader2 } from 'lucide-react'
@@ -71,7 +71,7 @@ export default function ProjectsPage() {
   return (
     <main id="main-content" className="section-padding">
       <div className="container-wide">
-        <MetadataInjector title="Projects" description="Explore my portfolio of web applications, mobile apps, and AI/ML projects built by Hamed Hussein." url="/projects" />
+        <MetadataInjector title="Projects" description="Explore my portfolio of web applications, mobile apps, and AI/ML projects built by CodingWithBashir." url="/projects" />
         <Breadcrumbs items={[{ label: 'Projects' }]} />
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
           <div>

@@ -46,7 +46,7 @@ export default function SkillsPage() {
   return (
     <main id="main-content" className="min-h-screen bg-surface-primary py-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <MetadataInjector title="Skills & Expertise" description="Hamed Hussein (hamedprodev) — full stack developer & AI/ML engineer. React, Next.js, TypeScript, Node.js, Python, and more." url="/skills" />
+        <MetadataInjector title="Skills & Expertise" description="CodingWithBashir (CodingWithBashir) — full stack developer & AI/ML engineer. React, Next.js, TypeScript, Node.js, Python, and more." url="/skills" />
         <Breadcrumbs items={[{ label: 'Skills' }]} />
 
         <SectionHeading

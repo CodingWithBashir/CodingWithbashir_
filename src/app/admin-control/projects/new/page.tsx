@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2, ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ProjectFormFields, emptyProjectForm } from '@/components/admin/ProjectFormFields'

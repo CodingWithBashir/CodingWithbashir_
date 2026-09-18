@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useCallback, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { withBase } from '@/lib/utils/base-path'
 import type { User } from '@supabase/supabase-js'
 
 export type AuthUser = {
@@ -14,19 +15,22 @@ export type AuthUser = {
 
 type AuthContextType = {
   user: AuthUser | null
-  loading: boolean
+  isAuthenticated: boolean
+  isAdmin: boolean
+  isLoading: boolean
   signOut: () => Promise<void>
   refresh: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  loading: true,
+  isAuthenticated: false,
+  isAdmin: false,
+  isLoading: true,
   signOut: async () => {},
   refresh: async () => {},
 })
 
-// Build the user from auth metadata (no DB query) so pages render instantly.
 function fromMetadata(authUser: User): AuthUser {
   const meta = (authUser.user_metadata || {}) as Record<string, any>
   const appMeta = (authUser.app_metadata || {}) as Record<string, any>
@@ -34,14 +38,14 @@ function fromMetadata(authUser: User): AuthUser {
     uid: authUser.id,
     email: authUser.email || null,
     name: meta.name || authUser.email?.split('@')[0] || '',
-    image: meta.avatar_url || null,
-    role: appMeta.role || meta.role || 'visitor',
+    image: meta.avatar_url || meta.avatar || null,
+    role: appMeta.role || meta.role || 'student',
   }
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [isLoading, setLoading] = useState(true)
 
   const refreshProfile = useCallback(async (supabase: any, authUser: User) => {
     try {
@@ -49,36 +53,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .from('profiles')
         .select('name, avatar_url, role')
         .eq('id', authUser.id)
-        .single()
+        .maybeSingle()
       if (profile) {
         setUser({
           uid: authUser.id,
           email: authUser.email || null,
           name: profile.name || authUser.email?.split('@')[0] || '',
           image: profile.avatar_url || null,
-          role: profile.role || 'visitor',
+          role: profile.role || 'student',
         })
       }
     } catch {
-      // ignore — metadata fallback is already shown
+      /* metadata fallback already shown */
     }
   }, [])
 
   useEffect(() => {
     const supabase = createClient()
+    let cancelled = false
 
-    supabase.auth.getUser().then(({ data: { user: authUser } }) => {
-      if (authUser) {
-        setUser(fromMetadata(authUser))
-        setLoading(false)
-        refreshProfile(supabase, authUser)
-      } else {
-        setUser(null)
-        setLoading(false)
-      }
-    }).catch(() => { setUser(null); setLoading(false) })
+    supabase.auth
+      .getUser()
+      .then(({ data: { user: authUser } }) => {
+        if (cancelled) return
+        if (authUser) {
+          setUser(fromMetadata(authUser))
+          setLoading(false)
+          refreshProfile(supabase, authUser)
+        } else {
+          setUser(null)
+          setLoading(false)
+        }
+      })
+      .catch(() => {
+        if (!cancelled) { setUser(null); setLoading(false) }
+      })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (cancelled) return
       if (session?.user) {
         setUser(fromMetadata(session.user))
         setLoading(false)
@@ -89,7 +101,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      cancelled = true
+      subscription.unsubscribe()
+    }
   }, [refreshProfile])
 
   const refresh = useCallback(async () => {
@@ -103,14 +118,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     const supabase = createClient()
-    await supabase.auth.signOut()
-    await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {})
+    await supabase.auth.signOut().catch(() => {})
     setUser(null)
-    window.location.href = '/login'
+    window.location.href = withBase('/login')
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signOut, refresh }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated: !!user,
+        isAdmin: user?.role === 'admin',
+        isLoading,
+        signOut,
+        refresh,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

@@ -10,10 +10,14 @@ interface Props {
   noindex?: boolean
 }
 
+const SITE_NAME = 'CodingWithBashir'
+const FALLBACK_URL = 'https://codingwithbashir.com'
+const DEFAULT_KEYWORDS =
+  'CodingWithBashir, Bashir, Learn to Code, Web Development, React, Next.js, JavaScript, Python, Free Courses, Certificates'
+
 export function MetadataInjector({ title, description, image, url, keywords, noindex }: Props) {
-  const siteName = 'Hamed Hussein'
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://hamedhussein.is-a.dev'
-  const fullTitle = `${title} | ${siteName}`
+  const fullTitle = `${title} | ${SITE_NAME}`
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : FALLBACK_URL
   const ogImage = image || `${baseUrl}/og/default.png`
   const canonical = url ? `${baseUrl}${url}` : (typeof window !== 'undefined' ? window.location.href : baseUrl)
 
@@ -26,13 +30,13 @@ export function MetadataInjector({ title, description, image, url, keywords, noi
       el.setAttribute('content', c)
     }
     setMeta('description', description)
-    setMeta('keywords', keywords || 'Hamed Hussein, hamedprodev, Full Stack Developer, AI/ML Engineer, Rwanda, Kigali, Next.js, React')
+    setMeta('keywords', keywords || DEFAULT_KEYWORDS)
     setMeta('og:title', fullTitle); setMeta('og:description', description)
     setMeta('og:image', ogImage); setMeta('og:url', canonical)
-    setMeta('og:type', 'website'); setMeta('og:site_name', siteName)
+    setMeta('og:type', 'website'); setMeta('og:site_name', SITE_NAME)
     setMeta('twitter:card', 'summary_large_image'); setMeta('twitter:title', fullTitle)
     setMeta('twitter:description', description); setMeta('twitter:image', ogImage)
-    setMeta('twitter:creator', '@hamedProDev')
+    setMeta('twitter:creator', '@codingwithbashir')
     let ce = document.querySelector('link[rel="canonical"]')
     if (!ce) { ce = document.createElement('link'); ce.setAttribute('rel', 'canonical'); document.head.appendChild(ce) }
     ce.setAttribute('href', canonical)

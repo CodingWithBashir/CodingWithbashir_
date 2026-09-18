@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { usePathname } from 'next/navigation'
 import { X, GraduationCap, Briefcase } from 'lucide-react'
 import { useAuth } from '@/lib/hooks/useAuth'
@@ -42,7 +42,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
           <SheetTitle className="text-text-primary flex items-center justify-between">
             <span className="flex items-center gap-2 font-bold">
               <Logo className="h-7 w-7 shrink-0" />
-              Hamed<span className="gradient-text"> Hussein</span>
+              CodingWith<span className="gradient-text">Bashir</span>
             </span>
             <button onClick={onClose} className="text-text-muted hover:text-text-primary" aria-label="Close menu">
               <X className="h-5 w-5" />

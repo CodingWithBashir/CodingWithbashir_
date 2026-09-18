@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ArrowRight, ExternalLink, Github, Loader2 } from 'lucide-react'

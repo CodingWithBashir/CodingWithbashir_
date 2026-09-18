@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ArrowDown, Github, Linkedin, Twitter, Instagram, Send, Briefcase, GraduationCap } from 'lucide-react'
@@ -69,14 +69,14 @@ export function HeroSection() {
             Hi, I&apos;m
           </motion.h1>
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }} className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4 leading-tight gradient-text">
-            {settings.hero_name || 'Hamed Hussein'}
+            {settings.hero_name || 'CodingWithBashir'}
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="text-lg text-text-secondary mb-1">
-            {settings.hero_title || 'Full Stack Developer & AI Engineer'}
+            {settings.hero_title || 'Learn to Code. Build Real Projects. Get Certified.'}
           </motion.p>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }} className="text-lg text-text-secondary mb-8">
-            {settings.hero_subtitle || 'Building scalable solutions that make an impact.'}
+            {settings.hero_subtitle || 'Free modern web-development courses, hands-on projects, and verifiable certificates.'}
           </motion.p>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="flex flex-wrap items-center gap-4 mb-4">
@@ -141,7 +141,7 @@ export function HeroSection() {
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               className="relative w-60 h-60 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full bg-gradient-to-br from-surface-card via-surface-tertiary to-surface-secondary glow-border overflow-hidden flex items-center justify-center shadow-md"
             >
-              <Image src={settings.profile_photo || HERO_IMAGE} alt={settings.hero_name || 'Hamed Hussein'} fill sizes="(max-width: 640px) 240px, (max-width: 1024px) 320px, 384px" className="object-cover" unoptimized priority />
+              <Image src={settings.profile_photo || HERO_IMAGE} alt={settings.hero_name || 'CodingWithBashir'} fill sizes="(max-width: 640px) 240px, (max-width: 1024px) 320px, 384px" className="object-cover" priority />
             </motion.div>
 
             {mounted && techBadges.map((badge, i) => (

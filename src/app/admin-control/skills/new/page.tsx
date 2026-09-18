@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Save, ArrowLeft } from 'lucide-react'
 import { saveJson } from '@/lib/utils/admin-save'
-import Link from 'next/link'
+import Link from '@/components/Link'
 
 const colorPresets = [
   { name: 'Blue', value: '#3B82F6' },

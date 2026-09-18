@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ExternalLink, Download, Trophy, Award, Star, Milestone, BookOpen, BadgeCheck, FileText, Loader2 } from 'lucide-react'
@@ -106,7 +106,7 @@ export default function AchievementsPage() {
   return (
     <main id="main-content" className="min-h-screen bg-surface-primary py-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <MetadataInjector title="Achievements" description="Milestones, awards, certificates, and recognitions along Hamed Hussein's journey as a developer." url="/achievements" />
+        <MetadataInjector title="Achievements" description="Milestones, awards, certificates, and recognitions along CodingWithBashir's journey as a developer." url="/achievements" />
         <Breadcrumbs items={[{ label: 'Achievements' }]} />
 
         <SectionHeading

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { Button } from '@/components/ui/button'
 import { Plus, Pencil, Trash2, Star, BookOpen, CheckSquare, Square, Eye, EyeOff, AlertTriangle } from 'lucide-react'
 

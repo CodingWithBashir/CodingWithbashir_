@@ -1,12 +1,13 @@
 'use client'
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ArrowLeft, Loader2, Eye, EyeOff } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Logo } from '@/components/shared/Logo'
+import { withBase } from '@/lib/utils/base-path'
 
 export default function LoginPage() {
   const [error, setError] = useState('')
@@ -50,10 +51,11 @@ export default function LoginPage() {
       const redirect = params.get('redirect')
       const isAdmin = (data.user?.app_metadata as any)?.role === 'admin' || (data.user?.user_metadata as any)?.role === 'admin'
       if (isAdmin) {
-        window.location.href = '/admin-control'
+        window.location.href = withBase('/admin-control')
         return
       }
-      window.location.href = redirect && redirect.startsWith('/') ? redirect : '/dashboard'
+      const safe = redirect && redirect.startsWith('/') ? redirect : '/dashboard'
+      window.location.href = withBase(safe)
     } catch {
       setError('Something went wrong. Please try again.')
       setLoading(false)
