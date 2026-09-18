@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { Award, Loader2, Download, ExternalLink, BadgeCheck, GraduationCap } from 'lucide-react'
 import { Button } from '@/components/ui/button'

@@ -9,7 +9,7 @@ interface SendEmailParams {
 
 export async function sendEmail({ to, subject, html }: SendEmailParams): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY
-  const from = process.env.RESEND_FROM_EMAIL || 'no-reply@hamedprodev.rw'
+  const from = process.env.RESEND_FROM_EMAIL || 'no-reply@codingwithbashir.com'
   if (!apiKey) return false // email not configured — skip silently
 
   try {
@@ -32,7 +32,7 @@ export function welcomeEmailHtml(name: string) {
     <div style="font-family:Inter,system-ui,sans-serif;max-width:520px;margin:auto;padding:24px;color:#0f172a">
       <h2 style="margin:0 0 8px">Welcome to the community, ${name || 'friend'} 👋</h2>
       <p style="color:#475569;line-height:1.6">
-        Thanks for joining Hamed Hussein's learning platform. Enroll in free courses,
+        Thanks for joining CodingWithBashir. Enroll in free courses,
         track your progress, and earn verifiable certificates.
       </p>
       <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/courses"

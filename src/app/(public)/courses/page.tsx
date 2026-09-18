@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Search, Clock, BarChart3, Loader2, ArrowRight } from 'lucide-react'
@@ -63,12 +63,12 @@ export default function CoursesPage() {
         <Breadcrumbs items={[{ label: 'Courses' }]} />
         <ItemListJsonLd
           type="Course"
-          name="Free Courses by Hamed Hussein"
+          name="Free Courses by CodingWithBashir"
           items={filtered.map(c => ({ name: c.title, url: `/courses/${c.slug}`, description: c.description }))}
         />
         <FAQJsonLd
           items={[
-            { question: 'Are Hamed Hussein’s courses really free?', answer: 'Yes. Every course is 100% free — no paywalls and no credit card required.' },
+            { question: 'Are CodingWithBashir’s courses really free?', answer: 'Yes. Every course is 100% free — no paywalls and no credit card required.' },
             { question: 'Do I get a certificate after finishing a course?', answer: 'Yes. Complete every lesson in order and pass the final quiz to earn a verifiable, downloadable certificate.' },
             { question: 'Do I need experience to start?', answer: 'No. Courses range from beginner to advanced, and progress unlocks sequentially so you always know what to learn next.' },
           ]}

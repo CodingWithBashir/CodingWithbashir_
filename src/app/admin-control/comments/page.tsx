@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { Loader2, MessageSquare, Check, EyeOff, Trash2, RefreshCw } from 'lucide-react'
 import { saveJson } from '@/lib/utils/admin-save'
 

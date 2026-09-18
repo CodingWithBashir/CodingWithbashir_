@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { generateSEOMetadata } from '@/lib/utils/seo'
 import { Card, CardContent } from '@/components/ui/card'
 import { Breadcrumbs } from '@/components/shared/Breadcrumbs'
@@ -7,7 +7,7 @@ import { BookOpen, FolderGit2, GraduationCap, Mail, ShieldCheck, User } from 'lu
 
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Documentation',
-  description: 'Getting started guide for the Hamed Hussein developer platform — portfolio, courses, and certificates.',
+  description: 'Getting started guide for the CodingWithBashir developer platform — portfolio, courses, and certificates.',
   url: '/docs',
 })
 

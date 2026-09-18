@@ -5,7 +5,7 @@ import { Breadcrumbs } from '@/components/shared/Breadcrumbs'
 
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Terms of Service',
-  description: 'Terms of service for Hamed Hussein — acceptable use of the site, courses, and certificates.',
+  description: 'Terms of service for CodingWithBashir — acceptable use of the site, courses, and certificates.',
   url: '/terms',
 })
 

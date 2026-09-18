@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Save, ArrowLeft } from 'lucide-react'
 import { saveJson } from '@/lib/utils/admin-save'
-import Link from 'next/link'
+import Link from '@/components/Link'
 
 const iconOptions = ['FolderOpen', 'Star', 'BookOpen', 'Calendar', 'ThumbsUp', 'Users', 'Code', 'Rocket', 'Award', 'Globe']
 

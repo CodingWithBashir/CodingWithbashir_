@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { motion } from 'framer-motion'
 import { MapPin } from 'lucide-react'
 import { useAuth } from '@/lib/hooks/useAuth'
@@ -89,7 +89,7 @@ export function Footer() {
         ],
         resources: [
           { label: 'Documentation', href: '/docs' },
-          { label: 'Open Source', href: 'https://github.com/HamedProDev' },
+          { label: 'Open Source', href: 'https://github.com/CodingWithBashir' },
           { label: 'Community', href: '/community' },
           { label: 'Newsletter', href: '/newsletter' },
         ],
@@ -111,7 +111,7 @@ export function Footer() {
             >
               <Logo className="h-8 w-8 shrink-0" />
               <span>
-                Hamed<span className="gradient-text"> Hussein</span>
+                CodingWith<span className="gradient-text">Bashir</span>
               </span>
             </Link>
             <p className="text-sm text-text-secondary mb-3">
@@ -216,7 +216,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-border-primary flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-text-muted">
-            &copy; {new Date().getFullYear()} {settings.site_name || 'Hamed Hussein'}. All rights
+            &copy; {new Date().getFullYear()} {settings.site_name || 'CodingWithBashir'}. All rights
             reserved.
           </p>
           <div className="flex items-center gap-4 text-xs text-text-muted">

@@ -1,112 +1,104 @@
 'use client'
 import { useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { ArrowLeft, Loader2, Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createClient } from '@/lib/supabase/client'
 import { Logo } from '@/components/shared/Logo'
-import { SITE_URL } from '@/lib/utils/seo'
+import { withBase } from '@/lib/utils/base-path'
 import { toast } from 'sonner'
 
 export default function RegisterPage() {
+  const [step, setStep] = useState<'form' | 'otp'>('form')
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
-  const [registeredEmail, setRegisteredEmail] = useState('')
   const [loading, setLoading] = useState(false)
-  const [resending, setResending] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [otp, setOtp] = useState('')
 
-  const handleResend = async () => {
-    if (!registeredEmail) return
-    setResending(true)
-    try {
-      const supabase = createClient()
-      const { error: resendError } = await supabase.auth.resend({
-        type: 'signup',
-        email: registeredEmail,
-        options: { emailRedirectTo: `${SITE_URL}/login?registered=true` },
-      })
-      if (resendError) toast.error(resendError.message)
-      else toast.success('Confirmation email resent — check your inbox and spam folder.')
-    } catch {
-      toast.error('Could not resend. Please try again.')
-    }
-    setResending(false)
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
-    setNotice('')
     const form = e.currentTarget as HTMLFormElement
     const data = Object.fromEntries(new FormData(form))
-
-    if (data.password !== data.confirmPassword) {
+    const emailVal = (data.email as string).trim()
+    const nameVal = (data.name as string).trim()
+    const pw = data.password as string
+    if (pw !== data.confirmPassword) {
       setError('Passwords do not match.')
       setLoading(false)
       return
     }
-
+    if (pw.length < 8) {
+      setError('Password must be at least 8 characters.')
+      setLoading(false)
+      return
+    }
     try {
-      // Capture referral code (a referring user's id) if present.
-      const ref = new URLSearchParams(window.location.search).get('ref')
-
       const supabase = createClient()
-      const { data: res, error: signUpError } = await supabase.auth.signUp({
-        email: (data.email as string).trim(),
-        password: data.password as string,
-        options: {
-          emailRedirectTo: `${SITE_URL}/login?registered=true`,
-          data: { name: data.name as string, referred_by: ref || '' },
-        },
+      // Save the intended name/password temporarily while we verify email.
+      setEmail(emailVal); setName(nameVal); setPassword(pw)
+      // signUp sends a confirmation email (Supabase's OTP/magic link).
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: emailVal,
+        password: pw,
+        options: { data: { name: nameVal } },
       })
-      // eslint-disable-next-line no-console
-      console.log('[register] signUp response:', { res, signUpError })
-
       if (signUpError) {
         const msg = signUpError.message.toLowerCase()
-        let friendly = signUpError.message
-        if (msg.includes('already registered') || msg.includes('already been registered')) {
-          friendly = 'This email is already registered — try signing in instead.'
-        } else if (msg.includes('password')) {
-          friendly = 'Password must be at least 8 characters long.'
-        } else if (msg.includes('rate limit')) {
-          friendly = 'Too many attempts — wait a minute and try again.'
+        if (msg.includes('already registered')) {
+          setError('This email is already registered — try signing in instead.')
+        } else {
+          setError(signUpError.message)
         }
-        setError(friendly)
-        toast.error(friendly)
         setLoading(false)
         return
       }
-
-      // No session yet → email confirmation is required.
-      if (!res?.session) {
-        setRegisteredEmail((data.email as string).trim())
-        setNotice('We sent a confirmation link to your email — click it to activate your account, then sign in. If you don\'t see it, check your spam folder.')
-        toast.success('Account created! Please check your email to confirm it.')
-        setLoading(false)
-        return
-      }
-
-      toast.success('Account created! Welcome aboard.')
-
-      // Fire-and-forget welcome email (no-op if Resend isn't configured).
-      fetch('/api/email/welcome', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: data.email, name: data.name, referred_by: ref || '' }),
-      }).catch(() => {})
-
-      window.location.href = '/dashboard'
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('[register] signUp failed:', err)
+      setStep('otp')
+      setNotice('We sent a 6-digit verification code to your email. Enter it below to activate your account. (If your Supabase project is configured for magic links, click the link in the email instead.)')
+      toast.success('Verification email sent.')
+    } catch {
       setError('Something went wrong. Please try again.')
-      setLoading(false)
     }
+    setLoading(false)
+  }
+
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.verifyOtp({
+        email,
+        token: otp.trim(),
+        type: 'signup',
+      })
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+        return
+      }
+      // Persist name to profiles table.
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('profiles').upsert(
+          { id: user.id, email: user.email!, name, avatar_url: null },
+          { onConflict: 'id' }
+        ).catch(() => {})
+      }
+      toast.success('Account verified! Welcome aboard.')
+      window.location.href = withBase('/dashboard')
+    } catch {
+      setError('Verification failed. Please check the code and try again.')
+    }
+    setLoading(false)
   }
 
   return (
@@ -120,65 +112,78 @@ export default function RegisterPage() {
           <Link href="/" className="mb-3 inline-flex justify-center">
             <Logo className="h-10 w-10" />
           </Link>
-          <h1 className="text-2xl font-bold tracking-tight">Create your account</h1>
-          <p className="text-sm text-text-secondary mt-1">Join free and start learning today</p>
+          <h1 className="text-2xl font-bold tracking-tight">
+            {step === 'form' ? 'Create your account' : 'Verify your email'}
+          </h1>
+          <p className="text-sm text-text-secondary mt-1">
+            {step === 'form' ? 'Join free and start learning today' : `Enter the 6-digit code we sent to ${email}`}
+          </p>
         </div>
 
         {notice && (
           <div className="mb-4 rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-600 dark:text-green-400">
-            <p className="font-semibold mb-1">Almost done ✅</p>
-            <p>{notice}</p>
-            <div className="mt-3 flex flex-wrap items-center gap-3">
-              <Link href="/login" className="font-semibold underline underline-offset-2">
-                Go to sign in
-              </Link>
-              <button
-                type="button"
-                onClick={handleResend}
-                disabled={resending}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-green-500/40 px-3 py-1.5 font-medium text-green-600 hover:bg-green-500/10 transition-colors disabled:opacity-60"
-              >
-                {resending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                Resend email
-              </button>
-            </div>
+            {notice}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="name">Full name</Label>
-            <Input id="name" name="name" placeholder="e.g. Hamed Hussein" required autoComplete="name" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" name="email" placeholder="you@example.com" required autoComplete="email" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Input id="password" type={showPassword ? 'text' : 'password'} name="password" placeholder="At least 8 characters" required minLength={8} autoComplete="new-password" className="pr-10" />
-              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors" aria-label={showPassword ? 'Hide password' : 'Show password'}>
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </button>
+        {step === 'form' && (
+          <form onSubmit={handleSendCode} className="space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Full name</Label>
+              <Input id="name" name="name" placeholder="e.g. Ahmad Bashir" required autoComplete="name" />
             </div>
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="confirmPassword">Confirm password</Label>
-            <Input id="confirmPassword" type="password" name="confirmPassword" placeholder="Repeat your password" required autoComplete="new-password" />
-          </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" name="email" type="email" placeholder="you@example.com" required autoComplete="email" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Input id="password" name="password" type={showPassword ? 'text' : 'password'} placeholder="At least 8 characters" required minLength={8} autoComplete="new-password" className="pr-10" />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors" aria-label={showPassword ? 'Hide password' : 'Show password'}>
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="confirmPassword">Confirm password</Label>
+              <Input id="confirmPassword" name="confirmPassword" type="password" placeholder="Repeat your password" required autoComplete="new-password" />
+            </div>
+            {error && <p className="text-red-400 text-sm">{error}</p>}
+            <Button type="submit" className="w-full gradient-bg text-white" disabled={loading}>
+              {loading ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Sending code…</> : 'Create account & send code'}
+            </Button>
+            <p className="text-center text-sm text-text-secondary mt-5">
+              Already have an account? <Link href="/login" className="text-brand-primary hover:underline">Sign in</Link>
+            </p>
+          </form>
+        )}
 
-          {error && <p className="text-red-400 text-sm">{error}</p>}
-
-          <Button type="submit" className="w-full gradient-bg text-white" disabled={loading}>
-            {loading ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Creating account...</> : 'Create account'}
-          </Button>
-        </form>
-
-        <p className="text-center text-sm text-text-secondary mt-5">
-          Already have an account?{' '}
-          <Link href="/login" className="text-brand-primary hover:underline">Sign in</Link>
-        </p>
+        {step === 'otp' && (
+          <form onSubmit={handleVerifyCode} className="space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="otp">6-digit verification code</Label>
+              <Input
+                id="otp"
+                name="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                placeholder="123456"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                required
+                className="tracking-[0.5em] text-center text-lg font-mono"
+              />
+            </div>
+            {error && <p className="text-red-400 text-sm">{error}</p>}
+            <Button type="submit" className="w-full gradient-bg text-white" disabled={loading || otp.length !== 6}>
+              {loading ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Verifying…</> : 'Verify & create account'}
+            </Button>
+            <Button type="button" variant="ghost" className="w-full" onClick={() => setStep('form')} disabled={loading}>
+              Use a different email
+            </Button>
+          </form>
+        )}
       </div>
     </div>
   )

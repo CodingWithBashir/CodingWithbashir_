@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { motion } from 'framer-motion'
 import { FolderOpen, GraduationCap, Users, Settings, Zap, Trophy, TrendingUp, Eye, BarChart3, MessageSquare } from 'lucide-react'
 

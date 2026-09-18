@@ -1,5 +1,5 @@
 'use client'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { Lock, CheckCircle, PlayCircle, FileText } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 

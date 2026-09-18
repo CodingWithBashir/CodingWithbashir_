@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { MessageCircle, Users, Calendar, Send, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -28,7 +28,7 @@ export default function CommunityPage() {
   return (
     <main id="main-content" className="section-padding pt-24">
       <div className="container-wide">
-        <MetadataInjector title="Community" description="Join the Hamed Hussein developer community — meetups, forums, and collaboration." url="/community" />
+        <MetadataInjector title="Community" description="Join the CodingWithBashir developer community — meetups, forums, and collaboration." url="/community" />
         <Breadcrumbs items={[{ label: 'Community' }]} />
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h1 className="text-4xl font-bold mb-4">Join the <span className="gradient-text">Community</span></h1>

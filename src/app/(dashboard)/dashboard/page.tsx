@@ -1,7 +1,7 @@
 'use client'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { BookMarked, Award, Mail, Shield, ArrowRight, Loader2, PlayCircle, GraduationCap, Users } from 'lucide-react'

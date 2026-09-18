@@ -1,0 +1,7 @@
+User-Agent: *
+Allow: /
+Disallow: /admin-control
+Disallow: /api
+Disallow: /dashboard
+
+Sitemap: https://codingwithbashir.github.io/CodingWithbashir_/sitemap.xml

@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/components/auth-provider'
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { BookOpen, Loader2, PlayCircle, Award, Lock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'

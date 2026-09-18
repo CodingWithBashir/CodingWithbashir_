@@ -5,7 +5,7 @@ import { Breadcrumbs } from '@/components/shared/Breadcrumbs'
 
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Privacy Policy',
-  description: 'Privacy policy for Hamed Hussein — how your data is collected, used, and protected.',
+  description: 'Privacy policy for CodingWithBashir — how your data is collected, used, and protected.',
   url: '/privacy',
 })
 

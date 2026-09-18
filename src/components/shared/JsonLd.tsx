@@ -1,15 +1,20 @@
+const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://codingwithbashir.com'
+const SITE_NAME = 'CodingWithBashir'
+const SITE_DESC =
+  'CodingWithBashir — free web-development courses, hands-on projects, and verifiable certificates.'
+const AUTHOR_NAME = 'Bashir (CodingWithBashir)'
+
 export function WebSiteJsonLd() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://hamedhussein.is-a.dev'
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Hamed Hussein',
-    url: baseUrl,
-    description: 'Personal developer ecosystem of Hamed Hussein — Fullstack & AI/ML Engineer',
-    author: { '@type': 'Person', name: 'Hamed Hussein' },
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: SITE_DESC,
+    author: { '@type': 'Person', name: AUTHOR_NAME },
     potentialAction: {
       '@type': 'SearchAction',
-      target: { '@type': 'EntryPoint', urlTemplate: `${baseUrl}/search?q={search_term_string}` },
+      target: { '@type': 'EntryPoint', urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
       'query-input': 'required name=search_term_string',
     },
   }
@@ -89,7 +94,7 @@ export function CourseJsonLd({ name, description, provider, url }: {
     '@type': 'Course',
     name,
     description,
-    provider: { '@type': 'Person', name: provider },
+    provider: { '@type': 'Organization', name: provider || SITE_NAME },
     url,
   }
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />

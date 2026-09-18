@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from '@/components/Link'
 import { ChevronRight, Home } from 'lucide-react'
 import { BreadcrumbJsonLd } from '@/components/shared/JsonLd'
 

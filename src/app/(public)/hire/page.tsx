@@ -65,14 +65,14 @@ export default function HirePage() {
   }, [])
 
   const handleNegotiate = (serviceName: string) => {
-    const msg = encodeURIComponent(`Hi Hamed, I'm interested in your ${serviceName} services. Can we discuss pricing?`)
+    const msg = encodeURIComponent(`Hi Bashir, I'm interested in your ${serviceName} services. Can we discuss pricing?`)
     window.open(`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${msg}`, '_blank')
   }
 
   return (
     <main id="main-content" className="section-padding pt-24">
       <div className="container-wide">
-        <MetadataInjector title="Hire Me" description="Hire Hamed Hussein for web development, mobile apps, AI/ML, game development, and technical consultation. All prices negotiable." url="/hire" />
+        <MetadataInjector title="Hire Me" description="Hire CodingWithBashir for web development, mobile apps, AI/ML, game development, and technical consultation. All prices negotiable." url="/hire" />
         <Breadcrumbs items={[{ label: 'Hire Me' }]} />
 
         {/* Hero */}
